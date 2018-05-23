@@ -33,8 +33,8 @@ public class Budgets {
         List<Budget> inRangeBudgetList = new ArrayList<>();
         List<com.odde.bbuddy.budget.Repo.Budget> fullBudgetList = new ArrayList<>();
         fullBudgetList = budgetRepo.findAll();
-        String beginMonth = beginDate.substring(0,beginDate.lastIndexOf("-"));
-        String endMonth = endDate.substring(0,endDate.lastIndexOf("-"));
+        //String beginMonth = beginDate.substring(0,beginDate.lastIndexOf("-"));
+        //String endMonth = endDate.substring(0,endDate.lastIndexOf("-"));
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate beginMonthLdt = LocalDate.parse(beginDate, df);
         LocalDate endMonthLdt = LocalDate.parse(endDate, df);
