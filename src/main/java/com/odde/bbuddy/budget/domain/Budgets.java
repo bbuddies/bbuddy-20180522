@@ -41,14 +41,18 @@ public class Budgets {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         //convert String to LocalDate
-        LocalDate budgetMonthStart = LocalDate.parse(budget.getMonth() + "-01", formatter);
+        LocalDate firstDayOfBudgetMonth = findFirstDayOfBudgetMonth(budget, formatter);
 
-        int startPortion = findStartPortion(budgetMonthStart, startDate);
-        int endPortion = findEndPortion(budgetMonthStart, endDate);
+        int startPortion = findStartPortion(firstDayOfBudgetMonth, startDate);
+        int endPortion = findEndPortion(firstDayOfBudgetMonth, endDate);
 
-        int daysInMonth =  budgetMonthStart.lengthOfMonth();
+        int daysInMonth =  firstDayOfBudgetMonth.lengthOfMonth();
 
         return (double)(daysInMonth - startPortion - endPortion) / daysInMonth;
+    }
+
+    private LocalDate findFirstDayOfBudgetMonth(Budget budget, DateTimeFormatter formatter) {
+        return LocalDate.parse(budget.getMonth() + "-01", formatter);
     }
 
     private int findStartPortion(LocalDate budgetMonthStart, LocalDate startDate) {
