@@ -26,6 +26,8 @@ public class BudgetController {
     @PostMapping("budgets/add")
     public String listBudget(Budget budget, Model model) {
         budgets.add(budget);
+
+        budgets.findAll();
         log.info(budget.getMonth());
         log.info(String.valueOf(budget.getAmount()));
 

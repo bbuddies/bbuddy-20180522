@@ -5,6 +5,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class Budgets {
 
@@ -15,5 +17,9 @@ public class Budgets {
         com.odde.bbuddy.budget.Repo.Budget budgetEntity = new com.odde.bbuddy.budget.Repo.Budget();
         BeanUtils.copyProperties(budget, budgetEntity);
         budgetRepo.save(budgetEntity);
+    }
+
+    public List findAll() {
+        return budgetRepo.findAll();
     }
 }
