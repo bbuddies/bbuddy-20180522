@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 
 @Component
@@ -37,29 +38,20 @@ public class Budgets {
 
     private double getPortion(Budget budget, LocalDate startDate, LocalDate endDate) {
 
-        int startPortion = findStartPortion(budget, startDate);
-        int endPortion = findEndPortion(budget, endDate);
-
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         //convert String to LocalDate
         LocalDate budgetMonthStart = LocalDate.parse(budget.getMonth() + "-01", formatter);
+
+        int startPortion = findStartPortion(budgetMonthStart, startDate);
+        int endPortion = findEndPortion(budgetMonthStart, endDate);
 
         int daysInMonth =  budgetMonthStart.lengthOfMonth();
 
         return (double)(daysInMonth - startPortion - endPortion) / daysInMonth;
     }
 
-    private int findStartPortion(Budget budget, LocalDate startDate) {
-        String budgetMonth = budget.getMonth();
-
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        //convert String to LocalDate
-        LocalDate budgetMonthStart = LocalDate.parse(budgetMonth + "-01", formatter);
-
+    private int findStartPortion(LocalDate budgetMonthStart, LocalDate startDate) {
 
         if (startDate.isBefore(budgetMonthStart)) {
             return 0;
@@ -68,18 +60,11 @@ public class Budgets {
         return startDate.getDayOfMonth() - 1;
     }
 
-    private int findEndPortion(Budget budget, LocalDate endDate){
-
-        String budgetMonth = budget.getMonth();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        //convert String to LocalDate
-        LocalDate budgetMonthStart = LocalDate.parse(budgetMonth + "-01", formatter);
+    private int findEndPortion(LocalDate budgetMonthStart, LocalDate endDate){
 
         int lengthOfMonth = budgetMonthStart.lengthOfMonth();
 
-        LocalDate budgetMonthEnd = LocalDate.parse(budgetMonth + "-" + lengthOfMonth, formatter);
+        LocalDate budgetMonthEnd = budgetMonthStart.plusDays(lengthOfMonth - 1);
 
         if (endDate.isAfter(budgetMonthEnd)) return 0;
 
