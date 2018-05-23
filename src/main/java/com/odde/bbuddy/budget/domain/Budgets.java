@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -53,5 +55,67 @@ public class Budgets {
         }
         double calResult = 0;
         return calResult;
+    }
+
+    public double calculate(List<Budget> budgets, LocalDate startDate, LocalDate endDate) {
+        double result = 0.0d;
+
+        for (Budget budget : budgets) {
+            result += budget.getAmount() * getPortion(budget, startDate, endDate);
+        }
+
+        return result;
+    }
+
+    private double getPortion(Budget budget, LocalDate startDate, LocalDate endDate) {
+
+        int x = findX(budget, startDate);
+        int y = finY(budget, endDate);
+
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        //convert String to LocalDate
+        LocalDate budgetMonthStart = LocalDate.parse(budget.getMonth() + "-01", formatter);
+
+        int daysInMonth =  budgetMonthStart.lengthOfMonth();
+
+        return (double)(daysInMonth - x - y) / daysInMonth;
+    }
+
+    private int findX(Budget budget, LocalDate startDate) {
+        String budgetMonth = budget.getMonth();
+
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        //convert String to LocalDate
+        LocalDate budgetMonthStart = LocalDate.parse(budgetMonth + "-01", formatter);
+
+
+        if (startDate.isBefore(budgetMonthStart)) {
+            return 0;
+        }
+
+        return startDate.getDayOfMonth() - 1;
+    }
+
+    private int finY(Budget budget, LocalDate endDate){
+
+        String budgetMonth = budget.getMonth();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        //convert String to LocalDate
+        LocalDate budgetMonthStart = LocalDate.parse(budgetMonth + "-01", formatter);
+
+        int lengthOfMonth = budgetMonthStart.lengthOfMonth();
+
+        LocalDate budgetMonthEnd = LocalDate.parse(budgetMonth + "-" + lengthOfMonth, formatter);
+
+        if (endDate.isAfter(budgetMonthEnd)) return 0;
+
+        return lengthOfMonth - endDate.getDayOfMonth();
+
     }
 }

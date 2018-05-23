@@ -12,4 +12,9 @@ public class Budget {
     private String beginDate;
     private String endDate;
     private double sum;
+
+    public Budget(String month, int amount) {
+        this.month = month;
+        this.amount = amount;
+    }
 }
