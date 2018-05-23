@@ -1,2 +1,17 @@
-    <div>2018-08</div>
-    <div>500</div>
+<div class="panel panel-primary">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Month</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        {{#Budgets}}
+        <tr>
+            <td class="text-left">{{month}}</td>
+            <td class="text-left">{{amount}}</td>
+        </tr>
+        {{/Budgets}}
+        </tbody>
+    </table>
+</div>

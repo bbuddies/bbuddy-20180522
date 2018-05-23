@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @Controller
 @Slf4j
 public class BudgetController {
@@ -27,10 +29,10 @@ public class BudgetController {
     public String listBudget(Budget budget, Model model) {
         budgets.add(budget);
 
-        budgets.findAll();
+        List<Budget> budgetList = budgets.findAll();
         log.info(budget.getMonth());
         log.info(String.valueOf(budget.getAmount()));
-
+        model.addAttribute("Budgets", budgetList);
         return "budgets/list";
     }
 
