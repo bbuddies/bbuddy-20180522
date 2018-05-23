@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
 public class BudgetsTest {
     List<Budget> budgetList;
     Budgets budgets;
+    final double DELTA = 0.000000000001d;
 
     @Before
     public void setUp() throws Exception {
@@ -37,7 +38,7 @@ public class BudgetsTest {
 
         double sum = budgets.calculate(budgetList, startDate, endDate);
 
-        assertEquals(900d, sum, 0.000001);
+        assertEquals(900d, sum, DELTA);
     }
 
     @Test
@@ -47,7 +48,7 @@ public class BudgetsTest {
 
         double actual = budgets.calculate(budgetList, startDate, endDate);
 
-        assertEquals(200 * 29.0/31 + 300 + 400, actual, 0.000000000001);
+        assertEquals(200 * 29.0/31 + 300 + 400, actual, DELTA);
     }
 
     @Test
@@ -55,8 +56,56 @@ public class BudgetsTest {
         LocalDate startDate = LocalDate.of(2018, 7, 1);
         LocalDate endDate = LocalDate.of(2018, 9, 15);
 
-        double sum = budgets.calculate(budgetList, startDate, endDate);
+        double actual = budgets.calculate(budgetList, startDate, endDate);
 
-        assertEquals(700d, sum, 0.000001);
+        assertEquals(700d, actual, DELTA);
+    }
+
+    @Test
+    public void budget_in_same_month() throws Exception {
+        LocalDate startDate = LocalDate.of(2018, 9, 10);
+        LocalDate endDate = LocalDate.of(2018, 9, 24);
+        budgetList = new ArrayList<>(Arrays.asList(new Budget[] {
+                new Budget("2018-09", 300),
+        }));
+        double actual = budgets.calculate(budgetList, startDate, endDate);
+
+        assertEquals(150d, actual, DELTA);
+    }
+
+    @Test
+    public void one_budget_before_end_date() throws Exception {
+        LocalDate startDate = LocalDate.of(2018, 9, 16);
+        LocalDate endDate = LocalDate.of(2018, 10, 1);
+        budgetList = new ArrayList<>(Arrays.asList(new Budget[] {
+                new Budget("2018-09", 300),
+        }));
+        double actual = budgets.calculate(budgetList, startDate, endDate);
+
+        assertEquals(150d, actual, DELTA);
+    }
+
+    @Test
+    public void one_budget_after_begin_date() throws Exception {
+        LocalDate startDate = LocalDate.of(2018, 8, 16);
+        LocalDate endDate = LocalDate.of(2018, 9, 15);
+        budgetList = new ArrayList<>(Arrays.asList(new Budget[] {
+                new Budget("2018-09", 300),
+        }));
+        double actual = budgets.calculate(budgetList, startDate, endDate);
+
+        assertEquals(150d, actual, DELTA);
+    }
+
+    @Test
+    public void one_budget_between_dates() throws Exception {
+        LocalDate startDate = LocalDate.of(2018, 8, 16);
+        LocalDate endDate = LocalDate.of(2018, 10, 11);
+        budgetList = new ArrayList<>(Arrays.asList(new Budget[] {
+                new Budget("2018-09", 300),
+        }));
+        double actual = budgets.calculate(budgetList, startDate, endDate);
+
+        assertEquals(300d, actual, DELTA);
     }
 }
