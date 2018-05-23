@@ -37,4 +37,26 @@ public class BudgetsTest {
 
         assertEquals(900d, sum, 0.000001);
     }
+
+    @Test
+    public void budgets1() throws Exception {
+        Budgets budgets = new Budgets();
+        LocalDate startDate = LocalDate.of(2018, 7, 3);
+        LocalDate endDate = LocalDate.of(2018, 9, 30);
+
+        double actual = budgets.calculate(budgetList, startDate, endDate);
+
+        assertEquals(200 * 29.0/31 + 300 + 400, actual, 0.000000000001);
+    }
+
+    @Test
+    public void budgets2() throws Exception {
+        Budgets budgets = new Budgets();
+        LocalDate startDate = LocalDate.of(2018, 7, 1);
+        LocalDate endDate = LocalDate.of(2018, 9, 15);
+
+        double sum = budgets.calculate(budgetList, startDate, endDate);
+
+        assertEquals(700d, sum, 0.000001);
+    }
 }

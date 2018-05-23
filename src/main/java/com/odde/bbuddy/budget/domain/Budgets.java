@@ -83,7 +83,7 @@ public class Budgets {
 
         if (endDate.isAfter(budgetMonthEnd)) return 0;
 
-        return lengthOfMonth - endDate.getDayOfMonth() - 1 ;
+        return lengthOfMonth - endDate.getDayOfMonth();
 
     }
 }
