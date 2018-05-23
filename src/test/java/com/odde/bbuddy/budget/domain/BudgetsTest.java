@@ -19,8 +19,8 @@ public class BudgetsTest {
     @Before
     public void setUp() throws Exception {
         budgetList = new ArrayList<>(Arrays.asList(new Budget[] {
-                new Budget("2018-07", 200),
                 new Budget("2018-08", 300),
+                new Budget("2018-07", 200),
                 new Budget("2018-09", 400)
         }));
 
@@ -107,5 +107,17 @@ public class BudgetsTest {
         double actual = budgets.calculate(budgetList, startDate, endDate);
 
         assertEquals(300d, actual, DELTA);
+    }
+
+    @Test
+    public void one_budget() throws Exception {
+        LocalDate startDate = LocalDate.of(2018, 9, 1);
+        LocalDate endDate = LocalDate.of(2018, 9, 1);
+        budgetList = new ArrayList<>(Arrays.asList(new Budget[] {
+                new Budget("2018-09", 300),
+        }));
+        double actual = budgets.calculate(budgetList, startDate, endDate);
+
+        assertEquals(300.0 * 1/30, actual, DELTA);
     }
 }
