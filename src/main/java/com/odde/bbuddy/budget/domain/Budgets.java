@@ -37,8 +37,8 @@ public class Budgets {
 
     private double getPortion(Budget budget, LocalDate startDate, LocalDate endDate) {
 
-        int x = findX(budget, startDate);
-        int y = finY(budget, endDate);
+        int startPortion = findStartPortion(budget, startDate);
+        int endPortion = findEndPortion(budget, endDate);
 
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -48,10 +48,10 @@ public class Budgets {
 
         int daysInMonth =  budgetMonthStart.lengthOfMonth();
 
-        return (double)(daysInMonth - x - y) / daysInMonth;
+        return (double)(daysInMonth - startPortion - endPortion) / daysInMonth;
     }
 
-    private int findX(Budget budget, LocalDate startDate) {
+    private int findStartPortion(Budget budget, LocalDate startDate) {
         String budgetMonth = budget.getMonth();
 
 
@@ -68,7 +68,7 @@ public class Budgets {
         return startDate.getDayOfMonth() - 1;
     }
 
-    private int finY(Budget budget, LocalDate endDate){
+    private int findEndPortion(Budget budget, LocalDate endDate){
 
         String budgetMonth = budget.getMonth();
 
