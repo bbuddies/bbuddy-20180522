@@ -33,10 +33,6 @@ public class BudgetSteps {
 
     @Then("^show month and amount$")
     public void show_and(List<Budget> budgets) throws Throwable {
-        System.out.println(budgets != null);
-        System.out.println(budgets.get(0));
-
-
         uiDriver.waitForTextPresent(budgets.get(0).getMonth());
         uiDriver.waitForTextPresent(budgets.get(0).getAmount());
     }
