@@ -7,6 +7,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.time.temporal.TemporalUnit;
 import java.util.List;
 
@@ -25,6 +29,39 @@ public class Budgets {
     public List findAll() {
         return budgetRepo.findAll();
     }
+
+    public double getInRangeBudget(String beginDate, String endDate) {
+        List<Budget> inRangeBudgetList = new ArrayList<>();
+        List<com.odde.bbuddy.budget.Repo.Budget> fullBudgetList = new ArrayList<>();
+        fullBudgetList = budgetRepo.findAll();
+        String beginMonth = beginDate.substring(0,beginDate.lastIndexOf("-"));
+        String endMonth = endDate.substring(0,endDate.lastIndexOf("-"));
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM");
+        LocalDateTime beginMonthLdt = LocalDateTime.parse(beginMonth, df);
+        LocalDateTime endMonthLdt = LocalDateTime.parse(endMonth, df);
+
+        for (com.odde.bbuddy.budget.Repo.Budget budget:fullBudgetList){
+            LocalDateTime budgetLdt = LocalDateTime.parse(budget.getMonth(), df);
+            if(budgetLdt.isEqual(beginMonthLdt)|| budgetLdt.isAfter(beginMonthLdt)){
+                Budget domain = new Budget();
+                BeanUtils.copyProperties(budget, domain);
+                inRangeBudgetList.add(domain);
+            }
+
+            if(budgetLdt.isEqual(endMonthLdt)|| budgetLdt.isAfter(endMonthLdt)){
+                Budget domain = new Budget();
+                BeanUtils.copyProperties(budget, domain);
+                inRangeBudgetList.add(domain);
+            }
+        }
+
+        DateTimeFormatter dfForCal = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate beginDateForCal = LocalDate.parse(beginDate,dfForCal);
+        LocalDate endDateForCal = LocalDate.parse(endDate,dfForCal);
+
+        return calculate(inRangeBudgetList, beginDateForCal,endDateForCal );
+    }
+
 
     public double calculate(List<Budget> budgets, LocalDate startDate, LocalDate endDate) {
         double result = 0.0d;
@@ -56,7 +93,6 @@ public class Budgets {
     }
 
     private int findStartPortion(LocalDate budgetMonthStart, LocalDate startDate) {
-
         if (startDate.isBefore(budgetMonthStart)) {
             return 0;
         }
