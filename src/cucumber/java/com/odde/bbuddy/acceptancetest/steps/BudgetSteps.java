@@ -6,10 +6,13 @@ import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+
+@Slf4j
 public class BudgetSteps {
 
     @Autowired
@@ -30,6 +33,9 @@ public class BudgetSteps {
 
     @Then("^show month and amount$")
     public void show_and(List<Budget> budgets) throws Throwable {
+        System.out.println(budgets != null);
+        System.out.println(budgets.get(0));
+
 
         uiDriver.waitForTextPresent(budgets.get(0).getMonth());
         uiDriver.waitForTextPresent(budgets.get(0).getAmount());
