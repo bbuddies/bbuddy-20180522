@@ -16,6 +16,10 @@ plugins {
 }
 apply plugin: "spring-boot"
 
+dependencies {
+    compile("org.springframework.boot:spring-boot-devtools")
+}
+
 war {
     baseName = "bbuddy"
     version =  "HEAD"

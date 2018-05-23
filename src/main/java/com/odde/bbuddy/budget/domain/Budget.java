@@ -8,4 +8,8 @@ import lombok.Setter;
 public class Budget {
     private String month;
     private int amount;
+
+    private String beginDate;
+    private String endDate;
+    private double sum;
 }

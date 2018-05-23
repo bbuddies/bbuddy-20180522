@@ -24,7 +24,6 @@ public class BudgetController {
         return "budgets/add";
     }
 
-
     @PostMapping("budgets/add")
     public String listBudget(Budget budget, Model model) {
         budgets.add(budget);
@@ -34,6 +33,18 @@ public class BudgetController {
         log.info(String.valueOf(budget.getAmount()));
         model.addAttribute("Budgets", budgetList);
         return "budgets/list";
+    }
+
+    @GetMapping("budgets/sum")
+    public String sumBudget() {
+        return "budgets/sum";
+    }
+
+    @PostMapping("budgets/sum")
+    public String sumBudget(Budget budget, Model model) {
+        budget.setSum(budgets.getInRangeBudget(budget.getBeginDate(), budget.getEndDate()));
+        model.addAttribute("Budget", budget);
+        return "budgets/result";
     }
 
 }
