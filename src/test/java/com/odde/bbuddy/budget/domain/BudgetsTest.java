@@ -13,6 +13,7 @@ import static org.junit.Assert.*;
 
 public class BudgetsTest {
     List<Budget> budgetList;
+    Budgets budgets;
 
     @Before
     public void setUp() throws Exception {
@@ -21,6 +22,8 @@ public class BudgetsTest {
                 new Budget("2018-08", 300),
                 new Budget("2018-09", 400)
         }));
+
+        budgets = new Budgets();
     }
 
     @After
@@ -29,7 +32,6 @@ public class BudgetsTest {
 
     @Test
     public void budgets_between_start_and_end() throws Exception {
-        Budgets budgets = new Budgets();
         LocalDate startDate = LocalDate.of(2017, 1, 1);
         LocalDate endDate = LocalDate.of(2018, 12, 31);
 
@@ -39,8 +41,7 @@ public class BudgetsTest {
     }
 
     @Test
-    public void budgets1() throws Exception {
-        Budgets budgets = new Budgets();
+    public void budget_in_startDate() throws Exception {
         LocalDate startDate = LocalDate.of(2018, 7, 3);
         LocalDate endDate = LocalDate.of(2018, 9, 30);
 
@@ -50,8 +51,7 @@ public class BudgetsTest {
     }
 
     @Test
-    public void budgets2() throws Exception {
-        Budgets budgets = new Budgets();
+    public void budgets_in_endDate() throws Exception {
         LocalDate startDate = LocalDate.of(2018, 7, 1);
         LocalDate endDate = LocalDate.of(2018, 9, 15);
 
