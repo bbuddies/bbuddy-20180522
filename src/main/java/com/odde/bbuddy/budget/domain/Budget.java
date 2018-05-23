@@ -13,6 +13,11 @@ public class Budget {
     private String endDate;
     private double sum;
 
+
+    public Budget() {
+    }
+
+
     public Budget(String month, int amount) {
         this.month = month;
         this.amount = amount;

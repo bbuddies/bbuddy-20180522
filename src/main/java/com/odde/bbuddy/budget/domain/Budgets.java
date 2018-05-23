@@ -30,7 +30,7 @@ public class Budgets {
     }
 
     public double getInRangeBudget(String beginDate, String endDate) {
-        List<com.odde.bbuddy.budget.Repo.Budget> inRangeBudgetList = new ArrayList<>();
+        List<Budget> inRangeBudgetList = new ArrayList<>();
         List<com.odde.bbuddy.budget.Repo.Budget> fullBudgetList = new ArrayList<>();
         fullBudgetList = budgetRepo.findAll();
         String beginMonth = beginDate.substring(0,beginDate.lastIndexOf("-"));
@@ -42,19 +42,23 @@ public class Budgets {
         for (com.odde.bbuddy.budget.Repo.Budget budget:fullBudgetList){
             LocalDateTime budgetLdt = LocalDateTime.parse(budget.getMonth(), df);
             if(budgetLdt.isEqual(beginMonthLdt)|| budgetLdt.isAfter(beginMonthLdt)){
-                inRangeBudgetList.add(budget);
+                Budget domain = new Budget();
+                BeanUtils.copyProperties(budget, domain);
+                inRangeBudgetList.add(domain);
             }
 
             if(budgetLdt.isEqual(endMonthLdt)|| budgetLdt.isAfter(endMonthLdt)){
-                inRangeBudgetList.add(budget);
+                Budget domain = new Budget();
+                BeanUtils.copyProperties(budget, domain);
+                inRangeBudgetList.add(domain);
             }
-
-            // call
-
-
         }
-        double calResult = 0;
-        return calResult;
+
+        DateTimeFormatter dfForCal = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate beginDateForCal = LocalDate.parse(beginDate,dfForCal);
+        LocalDate endDateForCal = LocalDate.parse(endDate,dfForCal);
+
+        return calculate(inRangeBudgetList, beginDateForCal,endDateForCal );
     }
 
     public double calculate(List<Budget> budgets, LocalDate startDate, LocalDate endDate) {
