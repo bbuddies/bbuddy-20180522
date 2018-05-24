@@ -17,12 +17,10 @@ public class BudgetPlan {
 
     public double query(LocalDate start, LocalDate end) {
         List<Budget> budgets = repo.findAll();
-        if(!budgets.isEmpty()){
-            if(start.equals(end)){
-                YearMonth yearMonth = YearMonth.parse(budgets.get(0).getMonth());
-                return budgets.get(0).getAmount() / yearMonth.lengthOfMonth();
-            }
-            return budgets.get(0).getAmount();
+        if (!budgets.isEmpty()) {
+            YearMonth yearMonth = YearMonth.parse(budgets.get(0).getMonth());
+            int daysBetween = start.until(end).getDays()+ 1;
+            return budgets.get(0).getAmount() / yearMonth.lengthOfMonth() * daysBetween;
         }
         return 0;
     }

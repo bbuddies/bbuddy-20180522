@@ -59,6 +59,14 @@ public class BudgetPlanTest {
                 LocalDate.of(2018, 6, 1));
     }
 
+    @Test
+    public void query_2_days() {
+        givenBudgets(new Budget("2018-06", 30));
+        assertAmount(2,
+                LocalDate.of(2018, 6, 1),
+                LocalDate.of(2018, 6, 2));
+    }
+
     private void assertAmount(int expected, LocalDate start, LocalDate end) {
         assertEquals(expected, plan.query(start, end), 0.1);
     }
