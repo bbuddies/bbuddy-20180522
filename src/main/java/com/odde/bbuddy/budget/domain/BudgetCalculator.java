@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class Calculator {
-    public Calculator() {
+public class BudgetCalculator {
+    public BudgetCalculator() {
     }
 
     public double calculate(List<Budget> budgets, LocalDate startDate, LocalDate endDate) {
@@ -20,8 +20,8 @@ public class Calculator {
 
     double getPortion(Budget budget, LocalDate startDate, LocalDate endDate) {
 
-        int x = findX(budget, startDate);
-        int y = finY(budget, endDate);
+        int x = findStartDiff(budget, startDate);
+        int y = findEndDiff(budget, endDate);
 
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -34,7 +34,7 @@ public class Calculator {
         return (double) (daysInMonth - x - y) / daysInMonth;
     }
 
-    int findX(Budget budget, LocalDate startDate) {
+    int findStartDiff(Budget budget, LocalDate startDate) {
         String budgetMonth = budget.getMonth();
 
 
@@ -51,7 +51,7 @@ public class Calculator {
         return startDate.getDayOfMonth() - 1;
     }
 
-    int finY(Budget budget, LocalDate endDate) {
+    int findEndDiff(Budget budget, LocalDate endDate) {
 
         String budgetMonth = budget.getMonth();
 

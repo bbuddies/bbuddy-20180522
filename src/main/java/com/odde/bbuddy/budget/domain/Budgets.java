@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class Budgets {
 
-    private final Calculator calculator = new Calculator();
+    private final BudgetCalculator budgetCalculator = new BudgetCalculator();
     @Autowired
     BudgetRepo budgetRepo;
 
@@ -58,12 +58,12 @@ public class Budgets {
         LocalDate beginDateForCal = LocalDate.parse(beginDate,dfForCal);
         LocalDate endDateForCal = LocalDate.parse(endDate,dfForCal);
 
-        return calculator.calculate(inRangeBudgetList, beginDateForCal, endDateForCal);
+        return budgetCalculator.calculate(inRangeBudgetList, beginDateForCal, endDateForCal);
     }
 
     public double calculate(List<Budget> budgets, LocalDate startDate, LocalDate endDate) {
 
-        return calculator.calculate(budgets, startDate, endDate);
+        return budgetCalculator.calculate(budgets, startDate, endDate);
     }
 
     private double getPortion(Budget budget, LocalDate startDate, LocalDate endDate) {
@@ -71,7 +71,7 @@ public class Budgets {
 
         //convert String to LocalDate
 
-        return calculator.getPortion(budget, startDate, endDate);
+        return budgetCalculator.getPortion(budget, startDate, endDate);
     }
 
     private int findX(Budget budget, LocalDate startDate) {
@@ -80,13 +80,13 @@ public class Budgets {
         //convert String to LocalDate
 
 
-        return calculator.findX(budget, startDate);
+        return budgetCalculator.findStartDiff(budget, startDate);
     }
 
     private int finY(Budget budget, LocalDate endDate){
 
         //convert String to LocalDate
 
-        return calculator.finY(budget, endDate);
+        return budgetCalculator.findEndDiff(budget, endDate);
     }
 }
