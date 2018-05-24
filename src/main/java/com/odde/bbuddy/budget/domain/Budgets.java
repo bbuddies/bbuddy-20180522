@@ -35,27 +35,23 @@ public class Budgets {
         return budgetRepo.findAll();
     }
 
-    public double getInRangeBudget(String beginDate, String endDate) {
+    public double getInRangeBudget(String startDateStr, String endDateStr) {
         List<Budget> inRangeBudgetList = new ArrayList<>();
         List<com.odde.bbuddy.budget.Repo.Budget> fullBudgetList = budgetRepo.findAll();
 
-        String bd = beginDate.substring(0, beginDate.lastIndexOf("-")) + "-01";
 
-        LocalDate beginMonthLdt = LocalDate.parse(bd, df);
-        LocalDate endDateLdt = LocalDate.parse(endDate, df);
-        
-        String ed = endDate.substring(0, endDate.lastIndexOf("-")) + "-" + endDateLdt.getDayOfMonth();
-        LocalDate endMonthLdt = LocalDate.parse(ed, df);
+        LocalDate startOfMonth = LocalDate.parse((startDateStr.substring(0, startDateStr.lastIndexOf("-")) + "-01"), df);
+        LocalDate endOfMonth = LocalDate.parse((endDateStr.substring(0, endDateStr.lastIndexOf("-")) + "-" + LocalDate.parse(endDateStr, df).getDayOfMonth()), df);
 
         for (com.odde.bbuddy.budget.Repo.Budget budget : fullBudgetList) {
-            LocalDate budgetLdt = LocalDate.parse(budget.getMonth() + "-01", df);
-            if (shouldPutToList(beginMonthLdt, endMonthLdt, budgetLdt)) {
+            LocalDate budgetOfMonth = LocalDate.parse(budget.getMonth() + "-01", df);
+            if (shouldPutToList(startOfMonth, endOfMonth, budgetOfMonth)) {
                 addToInRangeBudgetList(inRangeBudgetList, budget);
             }
         }
 
-        LocalDate beginDateForCal = LocalDate.parse(beginDate, df);
-        LocalDate endDateForCal = LocalDate.parse(endDate, df);
+        LocalDate beginDateForCal = LocalDate.parse(startDateStr, df);
+        LocalDate endDateForCal = LocalDate.parse(endDateStr, df);
 
         return budgetCalculator.calculate(inRangeBudgetList, beginDateForCal, endDateForCal);
     }
