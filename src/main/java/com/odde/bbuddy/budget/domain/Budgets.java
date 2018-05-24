@@ -15,6 +15,8 @@ public class Budgets {
 
     private final BudgetCalculator budgetCalculator = new BudgetCalculator();
 
+    private final DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
     BudgetRepo budgetRepo;
 
     @Autowired
@@ -35,18 +37,13 @@ public class Budgets {
 
     public double getInRangeBudget(String beginDate, String endDate) {
         List<Budget> inRangeBudgetList = new ArrayList<>();
-        List<com.odde.bbuddy.budget.Repo.Budget> fullBudgetList = new ArrayList<>();
-        fullBudgetList = budgetRepo.findAll();
+        List<com.odde.bbuddy.budget.Repo.Budget> fullBudgetList = budgetRepo.findAll();
 
-
-
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String bd = beginDate.substring(0, beginDate.lastIndexOf("-")) + "-01";
 
         LocalDate beginMonthLdt = LocalDate.parse(bd, df);
         LocalDate endDateLdt = LocalDate.parse(endDate, df);
-
-
+        
         String ed = endDate.substring(0, endDate.lastIndexOf("-")) + "-" + endDateLdt.getDayOfMonth();
         LocalDate endMonthLdt = LocalDate.parse(ed, df);
 
