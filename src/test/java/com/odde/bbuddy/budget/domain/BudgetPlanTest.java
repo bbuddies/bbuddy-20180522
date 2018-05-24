@@ -91,6 +91,17 @@ public class BudgetPlanTest {
                 LocalDate.of(2018, 7, 30));
     }
 
+    @Test
+    public void query_across_2_budgets() {
+           givenBudgets(
+                   new Budget("2018-06", 30),
+                   new Budget("2018-07", 310)
+                   );
+        assertAmount(16 + 200,
+                LocalDate.of(2018, 6, 15),
+                LocalDate.of(2018, 7, 20));
+    }
+
     private void assertAmount(int expected, LocalDate start, LocalDate end) {
         assertEquals(expected, plan.query(new Period(start, end)), 0.1);
     }
