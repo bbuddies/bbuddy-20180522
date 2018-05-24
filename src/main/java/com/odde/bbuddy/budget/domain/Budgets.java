@@ -51,14 +51,10 @@ public class Budgets {
         LocalDate endMonthLdt = LocalDate.parse(ed, df);
 
         for (com.odde.bbuddy.budget.Repo.Budget budget : fullBudgetList) {
-            //DateTimeFormatter df2 = DateTimeFormatter.ofPattern("yyyy-MM");
             LocalDate budgetLdt = LocalDate.parse(budget.getMonth() + "-01", df);
-
-
             if (shouldPutToList(beginMonthLdt, endMonthLdt, budgetLdt)) {
                 addToInRangeBudgetList(inRangeBudgetList, budget);
             }
-
         }
 
         LocalDate beginDateForCal = LocalDate.parse(beginDate, df);
