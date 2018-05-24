@@ -20,30 +20,23 @@ public class BudgetCalculator {
 
     double getPortion(Budget budget, LocalDate startDate, LocalDate endDate) {
 
-        int x = findStartDiff(budget, startDate);
-        int y = findEndDiff(budget, endDate);
-
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        //convert String to LocalDate
-        LocalDate budgetMonthStart = LocalDate.parse(budget.getMonth() + "-01", formatter);
-
-        int daysInMonth = budgetMonthStart.lengthOfMonth();
-
-        return (double) (daysInMonth - x - y) / daysInMonth;
-    }
-
-    int findStartDiff(Budget budget, LocalDate startDate) {
         String budgetMonth = budget.getMonth();
 
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
         //convert String to LocalDate
         LocalDate budgetMonthStart = LocalDate.parse(budgetMonth + "-01", formatter);
 
 
+        int startDiff = findStartDiff(budgetMonthStart, startDate);
+        int endDiff = findEndDiff(budgetMonthStart, endDate);
+
+
+        int daysInMonth = budgetMonthStart.lengthOfMonth();
+
+        return (double) (daysInMonth - startDiff - endDiff) / daysInMonth;
+    }
+
+    int findStartDiff(LocalDate budgetMonthStart, LocalDate startDate) {
         if (startDate.isBefore(budgetMonthStart)) {
             return 0;
         }
@@ -51,18 +44,11 @@ public class BudgetCalculator {
         return startDate.getDayOfMonth() - 1;
     }
 
-    int findEndDiff(Budget budget, LocalDate endDate) {
-
-        String budgetMonth = budget.getMonth();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        //convert String to LocalDate
-        LocalDate budgetMonthStart = LocalDate.parse(budgetMonth + "-01", formatter);
+    int findEndDiff(LocalDate budgetMonthStart, LocalDate endDate) {
 
         int lengthOfMonth = budgetMonthStart.lengthOfMonth();
 
-        LocalDate budgetMonthEnd = LocalDate.parse(budgetMonth + "-" + lengthOfMonth, formatter);
+        LocalDate budgetMonthEnd = budgetMonthStart.plusDays(lengthOfMonth - 1);
 
         if (endDate.isAfter(budgetMonthEnd)) return 0;
 

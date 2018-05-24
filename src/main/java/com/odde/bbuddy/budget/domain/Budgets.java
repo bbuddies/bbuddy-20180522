@@ -65,28 +65,4 @@ public class Budgets {
 
         return budgetCalculator.calculate(budgets, startDate, endDate);
     }
-
-    private double getPortion(Budget budget, LocalDate startDate, LocalDate endDate) {
-
-
-        //convert String to LocalDate
-
-        return budgetCalculator.getPortion(budget, startDate, endDate);
-    }
-
-    private int findX(Budget budget, LocalDate startDate) {
-
-
-        //convert String to LocalDate
-
-
-        return budgetCalculator.findStartDiff(budget, startDate);
-    }
-
-    private int finY(Budget budget, LocalDate endDate){
-
-        //convert String to LocalDate
-
-        return budgetCalculator.findEndDiff(budget, endDate);
-    }
 }
