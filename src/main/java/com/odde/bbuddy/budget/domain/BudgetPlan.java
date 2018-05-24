@@ -4,7 +4,6 @@ import com.odde.bbuddy.budget.repo.Budget;
 import com.odde.bbuddy.budget.repo.BudgetRepository;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.List;
 
 public class BudgetPlan {
@@ -18,10 +17,17 @@ public class BudgetPlan {
     public double query(LocalDate start, LocalDate end) {
         List<Budget> budgets = repo.findAll();
         if (!budgets.isEmpty()) {
-            YearMonth yearMonth = YearMonth.parse(budgets.get(0).getMonth());
-            int daysBetween = start.until(end).getDays()+ 1;
-            return budgets.get(0).getAmount() / yearMonth.lengthOfMonth() * daysBetween;
+            Budget budget = budgets.get(0);
+            LocalDate startOfBudget = budget.getStartOfBudget();
+            LocalDate endOfBudget = budget.getEndOfBudget();
+
+            LocalDate startOfOverlapping = start.isAfter(startOfBudget) ? start : startOfBudget;
+            LocalDate endOfOverlapping = end.isBefore(endOfBudget) ? end : endOfBudget;
+
+            int daysBetween = startOfOverlapping.until(endOfOverlapping).getDays()+ 1;
+            return budget.getAmount() / budget.getDayCount() * daysBetween;
         }
         return 0;
     }
+
 }

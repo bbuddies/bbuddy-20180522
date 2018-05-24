@@ -2,6 +2,7 @@ package com.odde.bbuddy.budget.domain;
 
 import com.odde.bbuddy.budget.repo.Budget;
 import com.odde.bbuddy.budget.repo.BudgetRepository;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -65,6 +66,22 @@ public class BudgetPlanTest {
         assertAmount(2,
                 LocalDate.of(2018, 6, 1),
                 LocalDate.of(2018, 6, 2));
+    }
+
+    @Test
+    public void query_start_before_budget() {
+        givenBudgets(new Budget("2018-06", 30));
+        assertAmount(3,
+                LocalDate.of(2018, 5, 28),
+                LocalDate.of(2018, 6, 3));
+    }
+
+    @Test
+    public void query_end_after_budget() {
+         givenBudgets(new Budget("2018-06", 30));
+        assertAmount(11,
+                LocalDate.of(2018, 6, 20),
+                LocalDate.of(2018, 7, 3));
     }
 
     private void assertAmount(int expected, LocalDate start, LocalDate end) {
