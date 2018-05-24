@@ -9,7 +9,6 @@ public class BudgetPlan {
     private final BudgetRepository repo;
 
     public BudgetPlan(BudgetRepository repo) {
-
         this.repo = repo;
     }
 
