@@ -14,8 +14,13 @@ import java.util.List;
 public class Budgets {
 
     private final BudgetCalculator budgetCalculator = new BudgetCalculator();
-    @Autowired
+
     BudgetRepo budgetRepo;
+
+    @Autowired
+    public Budgets(BudgetRepo budgetRepo){
+        this.budgetRepo = budgetRepo;
+    }
 
 
     public void add(Budget budget){
@@ -35,8 +40,11 @@ public class Budgets {
         //String beginMonth = beginDate.substring(0,beginDate.lastIndexOf("-"));
         //String endMonth = endDate.substring(0,endDate.lastIndexOf("-"));
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate beginMonthLdt = LocalDate.parse(beginDate, df);
-        LocalDate endMonthLdt = LocalDate.parse(endDate, df);
+        String bd = beginDate.substring(0, beginDate.lastIndexOf("-")) + "-01";
+        LocalDate beginMonthLdt = LocalDate.parse(bd, df);
+        LocalDate endDateLdt = LocalDate.parse(endDate, df);
+        String ed = endDate.substring(0, endDate.lastIndexOf("-")) + "-" +endDateLdt.getDayOfMonth();
+        LocalDate endMonthLdt = LocalDate.parse(ed, df);
 
         for (com.odde.bbuddy.budget.Repo.Budget budget:fullBudgetList){
             //DateTimeFormatter df2 = DateTimeFormatter.ofPattern("yyyy-MM");

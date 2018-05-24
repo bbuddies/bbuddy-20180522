@@ -1,5 +1,6 @@
 package com.odde.bbuddy.budget.domain;
 
+import com.odde.bbuddy.budget.Repo.BudgetRepo;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,11 +11,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class BudgetsTest {
     List<Budget> budgetList;
     Budgets budgets;
     final double DELTA = 0.000000000001d;
+    BudgetRepo budgetRepo = mock(BudgetRepo.class);
 
     @Before
     public void setUp() throws Exception {
@@ -24,7 +28,7 @@ public class BudgetsTest {
                 new Budget("2018-09", 400)
         }));
 
-        budgets = new Budgets();
+        budgets = new Budgets(budgetRepo);
     }
 
     @After
@@ -119,5 +123,13 @@ public class BudgetsTest {
         double actual = budgets.calculate(budgetList, startDate, endDate);
 
         assertEquals(300.0 * 1/30, actual, DELTA);
+    }
+
+    @Test
+    public void get_in_range_budget() throws Exception {
+        List<com.odde.bbuddy.budget.Repo.Budget> budgetList = new ArrayList<>();
+        when(budgetRepo.findAll()).thenReturn(budgetList);
+        double result = budgets.getInRangeBudget("2018-01-01","2019-01-31");
+        assertEquals(0.0d, result, DELTA);
     }
 }
