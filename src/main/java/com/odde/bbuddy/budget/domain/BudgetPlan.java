@@ -4,6 +4,7 @@ import com.odde.bbuddy.budget.repo.Budget;
 import com.odde.bbuddy.budget.repo.BudgetRepository;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 public class BudgetPlan {
@@ -18,7 +19,8 @@ public class BudgetPlan {
         List<Budget> budgets = repo.findAll();
         if(!budgets.isEmpty()){
             if(start.equals(end)){
-                return budgets.get(0).getAmount() / 31;
+                YearMonth yearMonth = YearMonth.parse(budgets.get(0).getMonth());
+                return budgets.get(0).getAmount() / yearMonth.lengthOfMonth();
             }
             return budgets.get(0).getAmount();
         }

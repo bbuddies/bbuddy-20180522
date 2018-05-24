@@ -37,7 +37,7 @@ public class BudgetPlanTest {
 
     @Test
     public void query_1_day() {
-         givenBudgets(new Budget("2018-05", 310));
+        givenBudgets(new Budget("2018-05", 310));
         assertAmount(10,
                 LocalDate.of(2018, 5, 1),
                 LocalDate.of(2018, 5, 1));
@@ -45,10 +45,18 @@ public class BudgetPlanTest {
 
     @Test
     public void query_1_day_with_different_amount() {
-          givenBudgets(new Budget("2018-05", 31));
+        givenBudgets(new Budget("2018-05", 31));
         assertAmount(1,
                 LocalDate.of(2018, 5, 1),
                 LocalDate.of(2018, 5, 1));
+    }
+
+    @Test
+    public void query_1_day_in_Jun() {
+        givenBudgets(new Budget("2018-06", 30));
+        assertAmount(1,
+                LocalDate.of(2018, 6, 1),
+                LocalDate.of(2018, 6, 1));
     }
 
     private void assertAmount(int expected, LocalDate start, LocalDate end) {
