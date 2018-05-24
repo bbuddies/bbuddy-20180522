@@ -1,5 +1,6 @@
 package com.odde.bbuddy.budget.repo;
 
+import com.odde.bbuddy.budget.domain.Period;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -26,5 +27,9 @@ public class Budget {
 
     public int getDayCount() {
         return getYearMonth().lengthOfMonth();
+    }
+
+    public Period getPeriod() {
+        return new Period(getStartOfBudget(), getEndOfBudget());
     }
 }
